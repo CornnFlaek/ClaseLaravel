@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\Notas;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,19 +43,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('notas', function () {
-    $notas = DB::table('notas')->get();
-    return view('notas', ['notas' => $notas]);
-})->name('notas.index');
+Route::get('notas', 'App\Http\Controllers\NotasController@index')->name('notas.index');
 
-Route::get('agregar', function () {
-    return view('agregar');
-});
+Route::get('agregar', 'App\Http\Controllers\NotasController@agregar');
 
-Route::get('notas/{id}/editar', function ($id) {
-    $nota = DB::table('notas')
-    ->where('id', $id)
-    ->first();
-    //return 'Aquí se van a editar las notas' .$id;
-    return view('editar', ['nota' => $nota]);
-})->name('notas.edit');
+Route::post('crear', 'App\Http\Controllers\NotasController@crear')->name('notas.store');
+
+Route::get('notas/{id}/editar', 'App\Http\Controllers\NotasController@editar')->name('notas.edit');
+
+Route::put('notas/{notas}/editar', 'App\Http\Controllers\NotasController@update')->name('notas.update');
+
+Route::delete('notas/{id}', 'App\Http\Controllers\NotasController@destroy')->name('notas.destroy');
